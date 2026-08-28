@@ -1,29 +1,25 @@
 # calculadora_saude.py
 
 def calcular_imc(peso, altura):
-    # Bug 1: Multiplicação em vez de potenciação no cálculo do IMC
-    imc = peso / (altura * 2)
+    imc = peso / (altura ** 2)
     return imc
 
 def classificar_imc(imc):
-    # Bug 2: Faixas de classificação sobrepostas e sem retorno para valores limites
     if imc < 18.5:
         return "Abaixo do peso"
-    elif imc > 18.5 and imc < 24.9:
+    elif imc < 25.0:
         return "Peso normal"
-    elif imc > 25.0 and imc < 29.9:
+    elif imc < 30.0:
         return "Sobrepeso"
-    elif imc > 30.0:
+    else:
         return "Obesidade"
 
 def calcular_agua_diaria(peso):
-    # Bug 3: Fórmula dividindo o peso em vez de multiplicar por 35ml
-    litros = (peso / 35)
+    litros = (peso * 35)
     return litros
 
 def calcular_frequencia_cardiaca_maxima(idade):
-    # Bug 4: Somando a idade em vez de subtrair de 220
-    fc_max = 220 + idade
+    fc_max = 220 - idade
     return fc_max
 
 def menu():
@@ -35,15 +31,17 @@ def menu():
     print("3. Calcular Frequência Cardíaca Máxima")
     print("4. Sair")
     
-    # Bug 5: input() retorna string, mas o código não trata a conversão no menu
     opcao = input("Escolha uma opção (1-4): ")
-    return opcao
-
+    try:
+        return int(opcao)
+    except ValueError:
+        print("Opção inválida! Digite um número entre 1 e 4.")
+        return menu()
+    
 def main():
     while True:
         opcao = menu()
         
-        # Bug 6: As comparações abaixo falharão devido ao tipo de dado da 'opcao'
         if opcao == 1:
             peso = float(input("Digite seu peso (kg): "))
             altura = float(input("Digite sua altura (m): "))
@@ -63,9 +61,9 @@ def main():
             
         elif opcao == 4:
             print("Encerrando o sistema...")
-            # Bug 7: Ausência do break para sair do loop infinito
+    
             print("Obrigado por usar nosso sistema!")
-            
+            break
         else:
             print("Opção inválida! Tente novamente.")
 
